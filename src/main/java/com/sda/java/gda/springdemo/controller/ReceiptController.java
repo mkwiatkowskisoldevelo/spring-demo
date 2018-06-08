@@ -1,7 +1,9 @@
 package com.sda.java.gda.springdemo.controller;
 
+import com.sda.java.gda.springdemo.exception.NotFoundException;
 import com.sda.java.gda.springdemo.model.Product;
 import com.sda.java.gda.springdemo.model.Receipt;
+import com.sda.java.gda.springdemo.repository.ProductRepository;
 import com.sda.java.gda.springdemo.repository.ReceiptRepository;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -27,6 +29,9 @@ public class ReceiptController {
   @Autowired
   private ReceiptRepository receiptRepository;
 
+  @Autowired
+  private ProductRepository productRepository;
+
   @GetMapping
   @ResponseStatus(HttpStatus.OK)
   public List<Receipt> search(
@@ -34,18 +39,25 @@ public class ReceiptController {
       @RequestParam(required = false)
       @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
       @RequestParam(required = false)
-      @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)LocalDate endDate) {
+      @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate,
+      @RequestParam(required = false) Long productId) {
+
     if (null == startDate) {
       startDate = LocalDate.MIN;
     }
     if (null == endDate) {
       endDate = LocalDate.MAX;
     }
+    Product product = null != productId
+            ? productRepository.findById(productId)
+                .orElseThrow(() -> new NotFoundException(String.format("Product with id %s not found", productId)))
+            : null;
 
-    return receiptRepository.findByBuyerIgnoreCaseContainingAndDateBetween(
+    return receiptRepository.findByBuyerIgnoreCaseContainingAndDateBetweenAndProductsIsContaining(
         buyer,
         LocalDateTime.of(startDate, LocalTime.MIN),
-        LocalDateTime.of(endDate, LocalTime.MAX)
+        LocalDateTime.of(endDate, LocalTime.MAX),
+        product
     );
   }
 

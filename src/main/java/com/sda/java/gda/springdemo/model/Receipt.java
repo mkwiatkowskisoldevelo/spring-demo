@@ -24,11 +24,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Entity
 @Table(name = "receipts")
-public class Receipt {
-
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long id;
+public class Receipt extends BaseEntity {
 
   @Column(nullable = false)
   private String buyer;

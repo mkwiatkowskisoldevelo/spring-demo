@@ -1,5 +1,6 @@
 package com.sda.java.gda.springdemo.repository;
 
+import com.sda.java.gda.springdemo.model.Product;
 import com.sda.java.gda.springdemo.model.Receipt;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -9,8 +10,9 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ReceiptRepository extends JpaRepository<Receipt, Long> {
 
-  List<Receipt> findByBuyerIgnoreCaseContainingAndDateBetween(
+  List<Receipt> findByBuyerIgnoreCaseContainingAndDateBetweenAndProductsIsContaining(
       String buyer,
       LocalDateTime startDate,
-      LocalDateTime endDate);
+      LocalDateTime endDate,
+      Product product);
 }
