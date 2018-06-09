@@ -25,10 +25,10 @@ public class MainController {
 
   private List<String> list = new ArrayList<>();
 
-  @RequestMapping(value = "/", method = RequestMethod.GET)
+  /*@RequestMapping(value = "/", method = RequestMethod.GET)
   public ResponseEntity<String> heloWorld() {
     return ResponseEntity.ok("Hello World!");
-  }
+  }*/
 
   @GetMapping("/hello")
   @ResponseStatus(HttpStatus.OK)
