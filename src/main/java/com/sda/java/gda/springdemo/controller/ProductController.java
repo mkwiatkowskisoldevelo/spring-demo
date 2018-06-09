@@ -1,12 +1,16 @@
 package com.sda.java.gda.springdemo.controller;
 
+import com.sda.java.gda.springdemo.exception.BindingResultException;
+import com.sda.java.gda.springdemo.exception.ValidationException;
 import com.sda.java.gda.springdemo.model.Product;
 import com.sda.java.gda.springdemo.repository.ProductRepository;
 import com.sda.java.gda.springdemo.service.ProductService;
+import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -30,8 +34,10 @@ public class ProductController {
 
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
-  public Product create(@RequestBody Product product) {
-    return productRepository.save(product);
+  public Product create(
+      @RequestBody @Valid Product product,
+      BindingResult bindingResult) {
+    return productService.create(product, bindingResult);
   }
 
   @GetMapping

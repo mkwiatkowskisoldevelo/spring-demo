@@ -1,5 +1,6 @@
 package com.sda.java.gda.springdemo.service;
 
+import com.sda.java.gda.springdemo.exception.BindingResultException;
 import com.sda.java.gda.springdemo.exception.NotFoundException;
 import com.sda.java.gda.springdemo.model.Product;
 import com.sda.java.gda.springdemo.repository.ProductRepository;
@@ -9,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 
 @Service
 public class ProductService {
@@ -46,5 +49,15 @@ public class ProductService {
   public Page<Product> search(String name, Double minPrice, Double maxPrice, Pageable pageable) {
     return productRepository.findByNameContainingIgnoreCaseAndPriceGreaterThanEqualAndPriceLessThanEqual(
         name, minPrice, maxPrice, pageable);
+  }
+
+  public Product create(Product product, BindingResult bindingResult) {
+    if (productRepository.existsByNameIgnoreCase(product.getName())) {
+      bindingResult.addError(new FieldError("product", "name", String.format("Product with name %s already exists", product.getName())));
+    }
+    if (bindingResult.hasErrors()) {
+      throw new BindingResultException(bindingResult);
+    }
+    return productRepository.save(product);
   }
 }

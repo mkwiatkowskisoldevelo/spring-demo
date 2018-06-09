@@ -13,6 +13,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.Past;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -26,13 +29,19 @@ import lombok.Setter;
 @Table(name = "receipts")
 public class Receipt extends BaseEntity {
 
+  @Pattern.List({
+      @Pattern(regexp = "(?=.*[A-Z]).+", message = "must contain at least 1 number"),
+      @Pattern(regexp = "(?=\\S+$).+", message = "must not contain spaces")
+  })
   @Column(nullable = false)
   private String buyer;
 
+  @Past
   @Column(nullable = false)
   private LocalDateTime date;
 
-  @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+  @Size(max = 3)
+  @ManyToMany(fetch = FetchType.EAGER)
   @JoinTable(name = "receipt_products",
       joinColumns =
       @JoinColumn(name = "receipt_id", nullable = false),

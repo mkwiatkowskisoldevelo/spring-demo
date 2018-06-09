@@ -10,9 +10,8 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ReceiptRepository extends JpaRepository<Receipt, Long> {
 
-  List<Receipt> findByBuyerIgnoreCaseContainingAndDateBetweenAndProductsIsContaining(
+  List<Receipt> findByBuyerIgnoreCaseContainingAndDateBetween(
       String buyer,
       LocalDateTime startDate,
-      LocalDateTime endDate,
-      Product product);
+      LocalDateTime endDate);
 }

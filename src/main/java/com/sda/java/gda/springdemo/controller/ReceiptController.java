@@ -1,5 +1,6 @@
 package com.sda.java.gda.springdemo.controller;
 
+import com.sda.java.gda.springdemo.exception.BindingResultException;
 import com.sda.java.gda.springdemo.exception.NotFoundException;
 import com.sda.java.gda.springdemo.model.Product;
 import com.sda.java.gda.springdemo.model.Receipt;
@@ -10,9 +11,11 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
 import java.util.Optional;
+import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -39,8 +42,7 @@ public class ReceiptController {
       @RequestParam(required = false)
       @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
       @RequestParam(required = false)
-      @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate,
-      @RequestParam(required = false) Long productId) {
+      @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate) {
 
     if (null == startDate) {
       startDate = LocalDate.MIN;
@@ -48,22 +50,24 @@ public class ReceiptController {
     if (null == endDate) {
       endDate = LocalDate.MAX;
     }
-    Product product = null != productId
-            ? productRepository.findById(productId)
-                .orElseThrow(() -> new NotFoundException(String.format("Product with id %s not found", productId)))
-            : null;
 
-    return receiptRepository.findByBuyerIgnoreCaseContainingAndDateBetweenAndProductsIsContaining(
+    return receiptRepository.findAll();
+
+    /*return receiptRepository.findByBuyerIgnoreCaseContainingAndDateBetween(
         buyer,
         LocalDateTime.of(startDate, LocalTime.MIN),
-        LocalDateTime.of(endDate, LocalTime.MAX),
-        product
-    );
+        LocalDateTime.of(endDate, LocalTime.MAX)
+    );*/
   }
 
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
-  public Receipt create(@RequestBody Receipt receipt) {
+  public Receipt create(
+      @RequestBody @Valid Receipt receipt,
+      BindingResult bindingResult) {
+    if (bindingResult.hasErrors()) {
+      throw new BindingResultException(bindingResult);
+    }
     return receiptRepository.save(receipt);
   }
 
