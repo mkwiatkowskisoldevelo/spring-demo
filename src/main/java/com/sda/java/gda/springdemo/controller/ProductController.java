@@ -69,7 +69,8 @@ public class ProductController {
   @ResponseStatus(HttpStatus.OK)
   public Product update(
       @PathVariable Long id,
-      @RequestBody Product product) {
-    return productService.update(product, id);
+      @Valid @RequestBody Product product,
+      BindingResult bindingResult) {
+    return productService.update(product, id, bindingResult);
   }
 }

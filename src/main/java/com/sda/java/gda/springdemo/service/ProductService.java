@@ -34,14 +34,10 @@ public class ProductService {
     return product.get();
   }
 
-  public Product update(Product product, Long id) {
-    Product existingProduct = getById(id);
-    existingProduct.setName(product.getName());
-    existingProduct.setPrice(product.getPrice());
-    return productRepository.save(existingProduct);
-  }
-
   public List<Product> search(String name, Double minPrice, Double maxPrice) {
+    if (null == name) {
+      name = "";
+    }
     return productRepository.findByNameContainingIgnoreCaseAndPriceGreaterThanEqualAndPriceLessThanEqual(
         name, minPrice, maxPrice);
   }
@@ -51,13 +47,29 @@ public class ProductService {
         name, minPrice, maxPrice, pageable);
   }
 
+  public Product update(Product product, Long id, BindingResult bindingResult) {
+    Product existingProduct = getById(id);
+    validate(product, existingProduct.getName(), bindingResult);
+    existingProduct.setName(product.getName());
+    existingProduct.setPrice(product.getPrice());
+    return productRepository.save(existingProduct);
+  }
+
   public Product create(Product product, BindingResult bindingResult) {
-    if (productRepository.existsByNameIgnoreCase(product.getName())) {
-      bindingResult.addError(new FieldError("product", "name", String.format("Product with name %s already exists", product.getName())));
+    validate(product, null, bindingResult);
+    return productRepository.save(product);
+  }
+
+  private void validate(Product product, String currentName,
+      BindingResult bindingResult) {
+    if (!product.getName().equalsIgnoreCase(currentName)
+        && productRepository.existsByNameIgnoreCase(product.getName())) {
+      bindingResult.addError(
+          new FieldError("product", "name",
+              String.format("Product with name %s already exists", product.getName())));
     }
     if (bindingResult.hasErrors()) {
       throw new BindingResultException(bindingResult);
     }
-    return productRepository.save(product);
   }
 }
