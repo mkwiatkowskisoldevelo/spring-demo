@@ -1,0 +1,36 @@
+<form id="receipt-form" ng-submit="controller.save()">
+  <div class="form-group">
+    <label for="receipt-buyer">Buyer</label>
+    <input class="form-control" id="receipt-buyer" ng-model="controller.receipt.buyer"/>
+  </div>
+  <div class="form-group">
+    <label for="receipt-date">receipt Price</label>
+    <input class="form-control" id="receipt-date" type="datetime-local"
+           ng-model="controller.receipt.date"/>
+  </div>
+</form>
+
+
+<form class="form-inline" id="receipt-product-form" ng-submit="controller.addProduct()">
+  <div class="form-group">
+    <label for="product">Product</label>
+    <select id="product" class="form-control" ng-options="product.name for product in controller.products" ng-model="controller.selectedProduct" required></select>
+  </div>
+  <button class="btn btn-success" type="submit">Add Product</button>
+</form>
+
+<table class="table table-striped">
+  <thead>
+  <tr>
+    <th>Product Name</th>
+    <th>Price</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr ng-repeat="product in controller.receipt.products">
+    <td>{{product.name}}</td>
+    <td>{{product.price}}</td>
+  </tr>
+  </tbody>
+</table>
+<button class="btn btn-primary" type="submit" form="receipt-form">Save</button>

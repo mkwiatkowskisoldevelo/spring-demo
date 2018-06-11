@@ -5,6 +5,7 @@ import com.sda.java.gda.springdemo.exception.ValidationException;
 import com.sda.java.gda.springdemo.model.Product;
 import com.sda.java.gda.springdemo.repository.ProductRepository;
 import com.sda.java.gda.springdemo.service.ProductService;
+import java.util.List;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -40,7 +41,7 @@ public class ProductController {
     return productService.create(product, bindingResult);
   }
 
-  @GetMapping
+  /*@GetMapping
   @ResponseStatus(HttpStatus.OK)
   public Page<Product> search(
       @RequestParam(defaultValue = "") String name,
@@ -51,6 +52,12 @@ public class ProductController {
       maxPrice = Double.MAX_VALUE;
     }
     return productService.search(name, minPrice, maxPrice, pageable);
+  }*/
+
+  @GetMapping
+  @ResponseStatus(HttpStatus.OK)
+  public List<Product> search() {
+    return productRepository.findAll();
   }
 
   @DeleteMapping("/{id}")

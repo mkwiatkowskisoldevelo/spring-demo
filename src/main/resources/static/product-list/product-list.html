@@ -1,0 +1,22 @@
+<button class="btn btn-primary" ng-click="controller.searchProducts()">Search</button>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Product Name</th>
+      <th>Product Price</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr ng-repeat="product in controller.productList">
+      <td>{{product.name}}</td>
+      <td>{{product.price}}</td>
+      <td>
+        <button class="btn btn-primary"
+                ng-click="controller.viewProduct(product.id)">View</button>
+        <button class="btn btn-danger"
+                ng-click="controller.deleteProduct(product.id)">Delete</button>
+      </td>
+    </tr>
+  </tbody>
+</table>

@@ -30,7 +30,7 @@ import lombok.Setter;
 public class Receipt extends BaseEntity {
 
   @Pattern.List({
-      @Pattern(regexp = "(?=.*[A-Z]).+", message = "must contain at least 1 number"),
+      @Pattern(regexp = "(?=.*[A-Z]).+", message = "must contain at least 1 capital letter"),
       @Pattern(regexp = "(?=\\S+$).+", message = "must not contain spaces")
   })
   @Column(nullable = false)

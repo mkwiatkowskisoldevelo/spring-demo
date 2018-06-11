@@ -1,0 +1,15 @@
+<button class="btn btn-primary" ng-click="controller.search()">Search</button>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Buyer</th>
+      <th>Date</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr ng-repeat="receipt in controller.receiptList">
+      <td>{{receipt.buyer}}</td>
+      <td>{{receipt.date | date}}</td>
+    </tr>
+  </tbody>
+</table>

@@ -1,0 +1,1 @@
+angular.module('product-add', ['ngRoute', 'product']);

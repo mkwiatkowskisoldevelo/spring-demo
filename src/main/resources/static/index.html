@@ -24,10 +24,18 @@
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav">
                         <li class="dropdown">
-                            <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Products <span class="caret"></span></a>
+                            <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Products<span class="caret"></span></a>
                             <ul class="dropdown-menu">
                                 <li><a href="#/products">List of Products</a></li>
+                                <li><a href="#/products/add">Add Product</a></li>
                             </ul>
+                        </li>
+                        <li class="dropdown">
+                          <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Receipts<span class="caret"></span></a>
+                          <ul class="dropdown-menu">
+                            <li><a href="#/receipts">List of Receipts</a></li>
+                            <li><a href="#/receipts/add">Add Receipt</a></li>
+                          </ul>
                         </li>
                     </ul>
                 </div>
@@ -41,6 +49,32 @@
         <script src="/webjars/angularjs/1.4.9/angular.js"></script>
         <script src="/webjars/angularjs/1.4.9/angular-resource.js"></script>
         <script src="/webjars/angularjs/1.4.9/angular-route.js"></script>
+
+        <script src="/product/product.module.js"></script>
+        <script src="/product/product.service.js"></script>
+
+        <script src="/product-view/product-view.module.js"></script>
+        <script src="/product-view/product-view.controller.js"></script>
+        <script src="/product-view/product-view.routes.js"></script>
+
+        <script src="/product-add/product-add.module.js"></script>
+        <script src="/product-add/product-add.controller.js"></script>
+        <script src="/product-add/product-add.routes.js"></script>
+
+        <script src="/product-list/product-list.module.js"></script>
+        <script src="/product-list/product-list.controller.js"></script>
+        <script src="/product-list/product-list.routes.js"></script>
+
+        <script src="/receipt/receipt.module.js"></script>
+        <script src="/receipt/receipt.service.js"></script>
+
+        <script src="/receipt-list/receipt-list.module.js"></script>
+        <script src="/receipt-list/receipt-list.controller.js"></script>
+        <script src="/receipt-list/receipt-list.routes.js"></script>
+
+        <script src="/receipt-add/receipt-add.module.js"></script>
+        <script src="/receipt-add/receipt-add.controller.js"></script>
+        <script src="/receipt-add/receipt-add.routes.js"></script>
 
         <script src="/app.js"></script>
 
